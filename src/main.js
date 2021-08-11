@@ -13,6 +13,13 @@ import Button from 'primevue/button';
 import Rating from 'primevue/rating';
 import Card from 'primevue/card';
 import Message from 'primevue/message';
+import InputText from 'primevue/inputtext';
+import Menu from 'primevue/menu';
+import '@/style/custom.css';
+import 'primeflex/primeflex.css';
+import Divider from 'primevue/divider';
+import Menubar from 'primevue/menubar';
+import Avatar from 'primevue/avatar';
 
 Vue.config.productionTip = false
 Vue.use(PrimeVue);
@@ -22,6 +29,11 @@ Vue.component('Button', Button);
 Vue.component('Rating', Rating);
 Vue.component('Card', Card);
 Vue.component('Message', Message);
+Vue.component('InputText', InputText);
+Vue.component('Menu', Menu);
+Vue.component('Divider', Divider);
+Vue.component('Menubar', Menubar);
+Vue.component('Avatar', Avatar);
 
 new Vue({
   router,

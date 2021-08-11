@@ -1,8 +1,16 @@
 <template>
-    <div>Home page in dashboard module</div>
+    <div id="home">
+         Home 
+    </div>
 </template>
 <script>
 export default {
-    name:'Home'
+    name:'Home',
+    components:{
+        
+    },
+     methods: {
+         onMenuToggle() {}
+     }
 }
 </script>

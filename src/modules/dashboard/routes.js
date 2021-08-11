@@ -6,5 +6,9 @@ export default [
     {
         path:'home',
         component:()=> import("./pages/Home.vue"),
+    },
+    {
+        path:'create',
+        component:()=> import("./pages/CreateDashboard.vue")
     }
 ]

@@ -1,0 +1,44 @@
+body {
+    margin:0;
+    box-sizing: border-box;
+}
+#side-menu {
+    height: 100vh;
+}
+.left-navigation-menu {
+    height:100vh;
+    width:250px;
+    background:#f7f6f3;
+}
+.p-grid {
+    width: 100% !important;
+}
+
+#side-menu .p-menu {
+    border:none;
+    background-color: transparent;
+    width: 100%;
+    padding-left: 1rem;
+}
+
+.p-menu .p-menuitem-link:focus {
+    box-shadow:none !important;
+}
+.logo-wrapper {
+    padding:2rem;
+}
+#layout-topbar .p-menubar {
+    border:0 !important;
+}
+
+.login-form {
+    width: 400px;
+    margin: auto;
+    margin-top:10rem;
+}
+#login .input-wrappers {
+    text-align: left;
+}
+#login .input {
+    width:100%;
+}
