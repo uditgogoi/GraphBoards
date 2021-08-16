@@ -20,6 +20,7 @@ import 'primeflex/primeflex.css';
 import Divider from 'primevue/divider';
 import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar';
+import TieredMenu from 'primevue/tieredmenu';
 
 Vue.config.productionTip = false
 Vue.use(PrimeVue);
@@ -34,6 +35,7 @@ Vue.component('Menu', Menu);
 Vue.component('Divider', Divider);
 Vue.component('Menubar', Menubar);
 Vue.component('Avatar', Avatar);
+Vue.component('TieredMenu', TieredMenu);
 
 new Vue({
   router,

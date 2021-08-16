@@ -1,0 +1,38 @@
+dashboard1
+    -bargraph
+    -card1
+    -card2
+    -card3
+    -scatterplot
+    -table
+
+dashboard2
+    -scatterplot
+    -card1
+    -table
+
+dashboard3
+    -table
+
+
+dashboards:["dashboard1","dashboard2","dashboard3"]
+dashboarData:{
+    dashboard1: {
+        elements:[
+            {
+                type:'graph',
+                section:'line',
+                data: [
+                    {}
+                ],
+                metadata: {
+                    width:'',
+                    height:'',
+                    background:'',
+                    positionX:'',
+                    positionY:'',
+                }
+            }
+        ]
+    }
+}
