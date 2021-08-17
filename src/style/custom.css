@@ -42,3 +42,14 @@ body {
 #login .input {
     width:100%;
 }
+
+.full-card-height {
+    height: inherit;
+  }
+
+  .active-selected-card {
+      border:none
+  }
+  .draggable-box {
+      border: none;
+  }
