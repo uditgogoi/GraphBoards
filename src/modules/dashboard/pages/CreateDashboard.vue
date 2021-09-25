@@ -11,50 +11,47 @@
         />
         <TieredMenu ref="menu" :model="items" :popup="true" />
       </div>
-      <br/>
+      <br />
       <div class="data-component">
-        <vue-draggable-resizable
-          class-name-active="active-selected-card"
-          v-for="(component, key) in componentCount"
-          :key="key"
-          :x="component.x"
-          :y="component.y"
-          :w="200"
-          :h="200"
-          :resizable="true"
-          class="draggable-box"
-         
+        <span v-for="(component, key) in components" :key="key">
+          <DraggableComponent
+            :component="component"
+            :resizable="true"
+            :draggable="true"
+            @on-drag-start="onDragStart($event,component.id)"
+            @on-resize-start="onResizeStart($event, component.id)"
+          />
+        </span>
+      </div>
+      <div class="p-text-right p-mt-2">
+        <Button
+          icon="pi pi-save"
+          type="button"
+          label="Save Dashboard"
+          @click="saveDashboard"
+          iconPos="left"
+          class="p-button-secondary"
         >
-          <component :is="component.name"></component>
-        </vue-draggable-resizable>
+        </Button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {uniqueID} from "@/utils/helper";
 export default {
   name: "CreateDashboard",
   components: {
-    TableCard: () => import("@/modules/dashboard/components/TableCard.vue"),
-    ValueCard: () => import("@/modules/dashboard/components/ValueCard.vue"),
-    BarGraph: () => import("@/modules/dashboard/components/graphs/Bar.vue"),
-    LineGraph: () => import("@/modules/dashboard/components/graphs/Line.vue"),
-    AreaGraph: () => import("@/modules/dashboard/components/graphs/Area.vue"),
-    RadialGraph: () =>
-      import("@/modules/dashboard/components/graphs/Radial.vue"),
-    StackedGraph: () =>
-      import("@/modules/dashboard/components/graphs/Stacked.vue"),
-    ScatterplotGraph: () =>
-      import("@/modules/dashboard/components/graphs/Scatterplot.vue"),
+    DraggableComponent: () =>
+      import("@/modules/dashboard/components/DraggableComponent.vue"),
   },
   data() {
     return {
-      componentCount: [],
+      components: [],
       sync: false,
       draggingId: null,
       prevOffsetX: 0,
       prevOffsetY: 0,
-     
 
       items: [
         {
@@ -111,12 +108,12 @@ export default {
     };
   },
 
-   computed: {
-    draggingElement: function () {
-      if (! this.draggingId) return;
+  computed: {
+    draggingElement: function() {
+      if (!this.draggingId) return;
 
-      return this.elements.find(el => el.id === this.draggingId);
-    }
+      return this.elements.find((el) => el.id === this.draggingId);
+    },
   },
   mounted() {
     window.addEventListener("keydown", (ev) => {
@@ -137,28 +134,38 @@ export default {
 
     addGraph(type) {
       const component = {
+        id: uniqueID(),
         name: this.getGraphComponent(type),
         type: "graph",
         section: type,
+        w:300,
+        h:200,
       };
-      this.componentCount.push(component);
+      this.components.push(component);
+      console.log(this.components)
     },
 
     addTable() {
       const component = {
+        id: uniqueID(),
         name: "TableCard",
         type: "table",
+        w:500,
+        h:300,
       };
-      this.componentCount.push(component);
+      this.components.push(component);
     },
 
     addCard(type) {
       const component = {
+        id: uniqueID(),
         name: "ValueCard",
         type: "card",
         section: type,
+        w:200,
+        h:200,
       };
-      this.componentCount.push(component);
+      this.components.push(component);
     },
 
     getGraphComponent(graphType) {
@@ -178,54 +185,88 @@ export default {
       }
     },
 
-    dragging(id, left, top) {
-      this.draggingId = id;
+    onDragStart(obj, id) {
+      this.x = obj.x;
+      this.y = obj.y;
+      this.replacePosition(obj.x, obj.y,id);
+    },
 
-      if (!this.sync) return;
+    onResizeStart(dimension,id) {
+      this.replaceDimenstion(dimension,id)
+    },
 
-      const offsetX = left - this.draggingElement.x;
-      const offsetY = top - this.draggingElement.y;
+    saveDashboard() {
+      localStorage.setItem("components", JSON.stringify(this.components));
+    },
 
-      const deltaX = this.deltaX(offsetX);
-      const deltaY = this.deltaY(offsetY);
-
-      this.elements.map((el) => {
-        if (el.id !== id) {
-          el.x += deltaX;
-          el.y += deltaY;
+    replacePosition(x,y,id) {
+      this.components.forEach(component=> {
+        if(component.id==id ) {
+          component.x=x;
+          component.y=y;
         }
-
-        return el;
-      });
+      })
     },
-    dragstop(id, left, top) {
-      this.elements.map((el) => {
-        if (el.id === id) {
-          el.x = left;
-          el.y = top;
+
+    replaceDimenstion(dimension,id) {
+        this.components.forEach(component=> {
+        if(component.id==id ) {
+          component.x=dimension.x;
+          component.y=dimension.y;
+          component.w= dimension.width;
+          component.h= dimension.height;
         }
+      })
+    }
 
-        return el;
-      });
+    // dragging(id, left, top) {
+    //   this.draggingId = id;
 
-      this.draggingId = null;
-      this.prevOffsetX = 0;
-      this.prevOffsetY = 0;
-    },
-    deltaX(offsetX) {
-      const ret = offsetX - this.prevOffsetX;
+    //   if (!this.sync) return;
 
-      this.prevOffsetX = offsetX;
+    //   const offsetX = left - this.draggingElement.x;
+    //   const offsetY = top - this.draggingElement.y;
 
-      return ret;
-    },
-    deltaY(offsetY) {
-      const ret = offsetY - this.prevOffsetY;
+    //   const deltaX = this.deltaX(offsetX);
+    //   const deltaY = this.deltaY(offsetY);
 
-      this.prevOffsetY = offsetY;
+    //   this.elements.map((el) => {
+    //     if (el.id !== id) {
+    //       el.x += deltaX;
+    //       el.y += deltaY;
+    //     }
 
-      return ret;
-    },
+    //     return el;
+    //   });
+    // },
+    // dragstop(id, left, top) {
+    //   this.elements.map((el) => {
+    //     if (el.id === id) {
+    //       el.x = left;
+    //       el.y = top;
+    //     }
+
+    //     return el;
+    //   });
+
+    //   this.draggingId = null;
+    //   this.prevOffsetX = 0;
+    //   this.prevOffsetY = 0;
+    // },
+    // deltaX(offsetX) {
+    //   const ret = offsetX - this.prevOffsetX;
+
+    //   this.prevOffsetX = offsetX;
+
+    //   return ret;
+    // },
+    // deltaY(offsetY) {
+    //   const ret = offsetY - this.prevOffsetY;
+
+    //   this.prevOffsetY = offsetY;
+
+    //   return ret;
+    // },
   },
 };
 </script>
@@ -234,7 +275,7 @@ export default {
   padding-left: 2rem;
 }
 .data-component {
-  height: 85vh;
+  height: 80vh;
   overflow-y: scroll;
   width: 100%;
   position: relative;
