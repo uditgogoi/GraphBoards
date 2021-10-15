@@ -1,10 +1,14 @@
 <template>
   <div id="home">
+    <button @click="goToDemo">click here</button>
     <template v-if="!loading">
       <div v-for="(component, key) in components" :key="key">
         <DraggableComponent :component="component" :resizable="false"  :draggable="false"/>
       </div>
     </template>
+    <div v-else>
+      loading...
+    </div>
   </div>
 </template>
 <script>
@@ -17,17 +21,22 @@ export default {
   data() {
     return {
       components: [],
-      loading:true,
+      loading:false,
     };
   },
-  created() {
+  mounted() {
+    this.loading=true;
     const components = localStorage.getItem("components");
     this.components = JSON.parse(components);
-    this.loading=false;
+    setTimeout(()=>this.loading=false,2000);
+    
     console.log(this.components)
   },
   methods: {
     onMenuToggle() {},
+    goToDemo() {
+      this.$router.push({path:'/demo/frefd', params: {message:'hello there this is a demio'}})
+    }
   },
 };
 </script>

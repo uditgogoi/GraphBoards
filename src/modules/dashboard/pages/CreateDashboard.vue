@@ -139,7 +139,7 @@ export default {
         type: "graph",
         section: type,
         w:300,
-        h:200,
+        h:300,
       };
       this.components.push(component);
       console.log(this.components)

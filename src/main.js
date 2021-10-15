@@ -21,9 +21,11 @@ import Divider from 'primevue/divider';
 import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar';
 import TieredMenu from 'primevue/tieredmenu';
-
+import VueApexCharts from 'vue-apexcharts'
 Vue.config.productionTip = false
 Vue.use(PrimeVue);
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
 Vue.component('Dialog', Dialog);
 Vue.component('Button', Button);
